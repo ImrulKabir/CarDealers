@@ -1,0 +1,55 @@
+﻿@using CarDealers.Models
+@model IEnumerable<CarsalesModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2 class="text-center">Car Sales Report</h2>
+    <p class="text-center">To see the report choose a CSV file and click on Show Report</p>
+    @if (Model.Count() > 0)
+    {
+        <p class="text-info text-center">@ViewBag.Message</p>
+    }
+</div>
+
+<div>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="col-md-6">
+            <input type="file" name="postedFile" />
+        </div>
+        <div class="col-md-6">
+            <input type="submit" value="Show Report" />
+        </div>
+    }
+</div>
+<div>
+    @if (Model.Count() > 0)
+    {
+        <hr />
+        <table style="border-collapse: separate; border-spacing: 20px;">
+            <tr>
+                <th>Deal Number</th>
+                <th>Customer Name</th>
+                <th>Dealership Name</th>
+                <th>Vehicle</th>
+                <th>Price</th>
+                <th>Date</th>
+            </tr>
+            @foreach (CarsalesModel carsale in Model)
+            {
+                if (!carsale.DealNumber.All(char.IsDigit)) { continue; }
+                <tr>
+                    <td>@carsale.DealNumber</td>
+                    <td>@carsale.CustomerName</td>
+                    <td>@carsale.DealershipName</td>
+                    <td>@carsale.Vehicle</td>
+                    <td>@carsale.Price</td>
+                    <td>@carsale.Date</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+
